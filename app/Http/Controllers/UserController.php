@@ -4,14 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Services\SMS;
-use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
 
 class UserController extends Controller
 {
-    public function userLogin(Request $request)
+
+
+    public function mobileRegister(Request $request)
     {
         $request->validate([
             'phone' => ['required', 'digits_between:10,15'],
@@ -80,6 +82,62 @@ class UserController extends Controller
     }
 
 
+
+
+
+    public function updateMpin(Request $request)
+    {
+        $request->validate([
+            'mpin' => ['required', 'digits:6', 'confirmed'],
+        ]);
+
+        $user = auth()->user();
+        if (!$user) {
+            return response()->json([
+                'message' => 'Unauthenticated',
+                'status' => false,
+            ], 401);
+        }
+
+        $user->password = Hash::make((string) $request->input('mpin'));
+        $user->save();
+
+        return response()->json([
+            'message' => 'MPIN updated successfully',
+            'status' => 'success',
+        ]);
+    }
+
+
+    public function userNameUpdate(Request $request)
+    {
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => 'required'
+        ]);
+
+        $user = auth()->user();
+        if (!$user) {
+            return response()->json([
+                'message' => 'Unauthenticated',
+                'status' => false,
+            ], 401);
+        }
+
+        $user->name = (string) $request->input('name');
+        $user->email = (string) $request->input('email');
+        $user->customerid = 'AGPL' . random_int(100000, 999999);
+        $user->save();
+        $request->session()->put('customerid', $user->customerid);
+
+        return response()->json([
+            'user' => $user,
+            'customerid' => $user->customerid,
+            'message' => 'Name and Email updated successfully',
+            'status' => 'success',
+        ]);
+    }
+
     public function loggedUser()
     {
         $loggeduser = auth()->user();
@@ -91,4 +149,38 @@ class UserController extends Controller
     }
 
 
+
+    public function login(Request $request)
+    {
+        $sessionCustomerId = (string) $request->session()->get('customerid', '');
+
+        $request->validate([
+            'customerid' => $sessionCustomerId === ''
+                ? ['required', 'string']
+                : ['nullable', 'string'],
+            'mpin' => ['required', 'digits:6'],
+        ]);
+
+        $customerid = (string) $request->input('customerid', $sessionCustomerId);
+        $mpin = (string) $request->input('mpin');
+
+        $user = $customerid !== '' ? User::where('customerid', $customerid)->first() : null;
+
+        if ($user && $user->password && Hash::check($mpin, $user->password)) {
+            $token = $user->createToken('mytoken')->plainTextToken;
+            $request->session()->put('customerid', $user->customerid);
+
+            return response()->json([
+                'token' => $token,
+                'user' => $user,
+                'message' => 'Login Success',
+                'status' => 'success',
+            ], 200);
+        }
+
+        return response()->json([
+            'message' => 'The provided credentials are incorrect',
+            'status' => 'failed',
+        ], 401);
+    }
 }

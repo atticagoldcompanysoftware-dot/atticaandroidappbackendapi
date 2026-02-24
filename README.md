@@ -64,3 +64,29 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## Email OTP Verification (Mailtrap)
+
+Set SMTP in `.env`:
+
+```env
+MAIL_MAILER=smtp
+MAIL_HOST=sandbox.smtp.mailtrap.io
+MAIL_PORT=2525
+MAIL_USERNAME=your_mailtrap_username
+MAIL_PASSWORD=your_mailtrap_password
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS=no-reply@attica.local
+MAIL_FROM_NAME="${APP_NAME}"
+```
+
+Apply schema change:
+
+```bash
+php artisan migrate
+```
+
+API endpoints:
+
+- `POST /api/user/email/login` with `{ "email": "user@example.com" }`
+- `POST /api/user/email/verify-otp` with `{ "email": "user@example.com", "otp": "123456" }`
