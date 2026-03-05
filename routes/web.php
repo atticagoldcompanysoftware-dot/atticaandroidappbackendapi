@@ -25,6 +25,12 @@ Route::get('migrate', function () {
     Artisan::call('migrate');
     return "Migrate Completed!";
 });
+
+Route::get('migrate-fresh', function () {
+    Artisan::call('migrate:fresh');
+    return "Migrate Completed!";
+});
+
 Route::get('optimize', function () {
     Artisan::call('optimize');
     return "optimized!";

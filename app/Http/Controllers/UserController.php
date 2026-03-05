@@ -126,9 +126,11 @@ class UserController extends Controller
 
         $user->name = (string) $request->input('name');
         $user->email = (string) $request->input('email');
+        $user->device_id = (string) $request->input('device_id');
         $user->customerid = 'AGPL' . random_int(100000, 999999);
         $user->save();
         $request->session()->put('customerid', $user->customerid);
+        $request->session()->put('device_id', $user->device_id);
 
         return response()->json([
             'user' => $user,
@@ -153,22 +155,32 @@ class UserController extends Controller
     public function login(Request $request)
     {
         $sessionCustomerId = (string) $request->session()->get('customerid', '');
+        $sessionDeviceId = (string) $request->session()->get('device_id', '');
 
         $request->validate([
             'customerid' => $sessionCustomerId === ''
+                ? ['required', 'string']
+                : ['nullable', 'string'],
+            'device_id' => $sessionDeviceId === ''
                 ? ['required', 'string']
                 : ['nullable', 'string'],
             'mpin' => ['required', 'digits:6'],
         ]);
 
         $customerid = (string) $request->input('customerid', $sessionCustomerId);
+        $deviceid = (string) $request->input('device_id', $sessionDeviceId);
         $mpin = (string) $request->input('mpin');
 
-        $user = $customerid !== '' ? User::where('customerid', $customerid)->first() : null;
+        $user = ($customerid !== '' && $deviceid !== '')
+            ? User::where('customerid', $customerid)
+            ->where('device_id', $deviceid)
+            ->first()
+            : null;
 
         if ($user && $user->password && Hash::check($mpin, $user->password)) {
             $token = $user->createToken('mytoken')->plainTextToken;
             $request->session()->put('customerid', $user->customerid);
+            $request->session()->put('device_id', $user->deviceid);
 
             return response()->json([
                 'token' => $token,
