@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\UserController;
 
 Route::get('/test', function () {
     return "Abhiram";
@@ -21,6 +22,10 @@ Route::group(
                 Route::post('/profile/update', [AdminController::class, 'adminProfileUpdate'])->name('admin-profile-update');
                 Route::get('/change/password', [Admincontroller::class, 'changePassword'])->name('admin-change-password');
                 Route::post('/update/password', [AdminController::class, 'updatePassword'])->name('admin-password-update');
+
+
+
+                Route::get('/user/index', [UserController::class, 'index'])->name('user-list');
             }
         );
     }
