@@ -41,7 +41,7 @@
                                         <h5 class="">Admin Login</h5>
                                     </div>
                                     <div class="form-body">
-                                        <form class="row g-3" action="" method="POST">
+                                        <form class="row g-3" action="{{ route('admin-login-post') }}" method="POST">
                                             @csrf
                                             <div class="col-12">
                                                 <label for="inputEmailAddress" class="form-label">Email</label>
