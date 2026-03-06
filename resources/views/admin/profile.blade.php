@@ -45,7 +45,8 @@
                         <div class="card">
                             <div class="card-body">
 
-                                <form method="post" action="" enctype="multipart/form-data">
+                                <form method="post" action="{{ route('admin-profile-update') }}"
+                                    enctype="multipart/form-data">
                                     @csrf
 
 

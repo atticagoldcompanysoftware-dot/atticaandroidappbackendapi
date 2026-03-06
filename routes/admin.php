@@ -18,6 +18,7 @@ Route::group(
                 Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin-dashboard');
                 Route::get('/logout', [Admincontroller::class, 'adminLogout'])->name('admin-logout');
                 Route::get('/profile', [Admincontroller::class, 'adminProfile'])->name('admin-profile');
+                Route::post('/profile/update', [AdminController::class, 'adminProfileUpdate'])->name('admin-profile-update');
             }
         );
     }
