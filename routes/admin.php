@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\RateController;
 use App\Http\Controllers\Admin\UserController;
 
 Route::get('/test', function () {
@@ -27,6 +28,8 @@ Route::group(
 
                 Route::get('/user/index', [UserController::class, 'index'])->name('user-list');
                 Route::get('/user/delete/{id}', [UserController::class, 'delete'])->name('user-delete');
+
+                Route::get('/rate', [RateController::class, 'index'])->name('rate-index');
             }
         );
     }

@@ -25,9 +25,14 @@
                         </div>
                         <div class="menu-title">User List</div>
                     </a>
-
                 </li>
-
+                <li>
+                    <a href="{{ route('rate-index') }}">
+                        <div class="parent-icon"><i class="bx bx-category"></i>
+                        </div>
+                        <div class="menu-title">Rate</div>
+                    </a>
+                </li>
 
 
 
