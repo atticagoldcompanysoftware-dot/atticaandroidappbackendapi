@@ -98,4 +98,41 @@ class AdminController extends Controller
 
         return redirect()->back()->with('flash_success', 'Admin Profile Updated Successfully');
     }
+
+
+    public function changePassword()
+    {
+        return view('admin.change_password');
+    }
+
+    public function updatePassword(Request $request)
+    {
+
+        $request->validate([
+            'old_password' => 'required',
+            'new_password' => 'required|confirmed',
+        ]);
+
+        $hashedPassword = Auth::user()->password;
+        if (Hash::check($request->old_password, $hashedPassword)) {
+            $admin = Auth::user();
+            $admin->password = bcrypt($request->new_password);
+            $admin->save();
+
+
+            $notification1 = array(
+                'message' => 'Password Updated Successfully',
+                'alert-type' => 'success'
+            );
+
+            return redirect()->route('admin-login')->with($notification1);
+        } else {
+
+            $notification2 = array(
+                'message' => 'Old password is not match',
+                'alert-type' => 'error'
+            );
+            return redirect()->back()->with($notification2);
+        }
+    }
 }
