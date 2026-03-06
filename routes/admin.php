@@ -26,6 +26,7 @@ Route::group(
 
 
                 Route::get('/user/index', [UserController::class, 'index'])->name('user-list');
+                Route::get('/user/delete/{id}', [UserController::class, 'delete'])->name('user-delete');
             }
         );
     }

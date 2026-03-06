@@ -41,9 +41,9 @@
                                     <td>{{ $item->device_id }}</td>
                                     <td>{{ $item->customerid }}</td>
                                     <td>
-                                        <a href="
-                                        " class="btn btn-danger"
-                                            id="delete">Delete</a>
+                                        <a href="{{ route('user-delete', $item->id) }}
+                                        "
+                                            class="btn btn-danger" id="delete">Delete</a>
 
                                     </td>
                                 </tr>
