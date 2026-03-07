@@ -30,6 +30,7 @@ Route::group(
                 Route::get('/user/delete/{id}', [UserController::class, 'delete'])->name('user-delete');
 
                 Route::get('/rate', [RateController::class, 'index'])->name('rate-index');
+                Route::get('/rate/edit/{id}', [RateController::class, 'edit'])->name('rate-edit');
             }
         );
     }

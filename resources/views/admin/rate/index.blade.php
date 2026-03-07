@@ -38,11 +38,8 @@
                                     </td>
                                     <td>{{ $item->amount }}
                                     </td>
-
                                     <td>
-                                        <a href="" class="btn btn-info">Edit</a>
-
-
+                                        <a href="{{ route('rate-edit', $item->id) }}" class="btn btn-info">Edit</a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -61,8 +58,5 @@
                 </div>
             </div>
         </div>
-
-
-
     </div>
 @endsection

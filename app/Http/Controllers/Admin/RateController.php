@@ -13,4 +13,11 @@ class RateController extends Controller
         $datas = Rate::latest()->get();
         return view('admin.rate.index', compact('datas'));
     }
+
+
+    public function edit($id)
+    {
+        $data = Rate::findOrFail($id);
+        return view('admin.rate.edit', compact('data'));
+    }
 }
