@@ -34,6 +34,22 @@
                     </a>
                 </li>
 
+                <li>
+                    <a href="javascript:;" class="has-arrow">
+                        <div class="parent-icon"><i class='bx bx-cart'></i>
+                        </div>
+                        <div class="menu-title">Product</div>
+                    </a>
+                    <ul>
+                        <li> <a href="{{ route('product-create') }}"><i class='bx bx-radio-circle'></i>Add Product</a>
+                        </li>
+                        <li> <a href="ecommerce-products-details.html"><i class='bx bx-radio-circle'></i>All
+                                Products</a>
+                        </li>
+
+                    </ul>
+                </li>
+
 
 
             </ul>

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\RateController;
 use App\Http\Controllers\Admin\UserController;
 
@@ -35,6 +36,9 @@ Route::group(
                 Route::get('/rate', [RateController::class, 'index'])->name('rate-index');
                 Route::get('/rate/edit/{id}', [RateController::class, 'edit'])->name('rate-edit');
                 Route::post('/rate/update', [RateController::class, 'update'])->name('rate-update');
+
+                Route::get('/product/create', [ProductController::class, 'create'])->name('product-create');
+                Route::post('/product/store', [ProductController::class, 'store'])->name('product-store');
             }
         );
     }
