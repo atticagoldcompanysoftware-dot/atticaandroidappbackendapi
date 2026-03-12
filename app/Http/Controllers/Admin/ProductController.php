@@ -51,4 +51,11 @@ class ProductController extends Controller
 
         return redirect()->route('product-create')->with($notification);
     }
+
+
+    public function index()
+    {
+        $datas = Product::latest()->get();
+        return view('admin.product.index', compact('datas'));
+    }
 }

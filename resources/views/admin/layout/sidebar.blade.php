@@ -43,7 +43,7 @@
                     <ul>
                         <li> <a href="{{ route('product-create') }}"><i class='bx bx-radio-circle'></i>Add Product</a>
                         </li>
-                        <li> <a href="ecommerce-products-details.html"><i class='bx bx-radio-circle'></i>All
+                        <li> <a href="{{ route('product-index') }}"><i class='bx bx-radio-circle'></i>All
                                 Products</a>
                         </li>
 
