@@ -9,4 +9,10 @@ class Product extends Model
 {
     use HasFactory;
     protected $guarded = [];
+
+
+    public function rate()
+    {
+        return $this->belongsTo(Rate::class, 'rate_id', 'id');
+    }
 }

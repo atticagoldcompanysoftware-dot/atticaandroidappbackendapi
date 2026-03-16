@@ -40,7 +40,7 @@
                             @foreach ($datas as $key => $item)
                                 <tr>
                                     <td> {{ $key + 1 }} </td>
-                                    <td>{{ $item->rate_id }}</td>
+                                    <td>{{ $item->rate->name }}</td>
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->weight }}</td>
                                     <td>{{ $item->purity }}</td>
