@@ -58,7 +58,7 @@
 
                                     </td>
                                     <td>
-                                        <a href="" class="btn btn-info">Edit</a>
+                                        <a href="{{ route('product-edit', $item->id) }}" class="btn btn-info">Edit</a>
                                     </td>
                                 </tr>
                             @endforeach

@@ -1,7 +1,6 @@
 @extends('admin.layout.app')
 @section('content')
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
     <div class="page-content">
         <!--breadcrumb-->
         <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
@@ -11,7 +10,7 @@
                     <ol class="breadcrumb mb-0 p-0">
                         <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                         </li>
-                        <li class="breadcrumb-item active" aria-current="page">Add Product</li>
+                        <li class="breadcrumb-item active" aria-current="page">Edit Product</li>
                     </ol>
                 </nav>
             </div>
@@ -28,18 +27,19 @@
                         <div class="card">
                             <div class="card-body">
 
-                                <form method="post" action="{{ route('product-store') }}" enctype="multipart/form-data">
+                                <form method="post" action="{{ route('product-update') }}" enctype="multipart/form-data">
                                     @csrf
 
+                                    <input type="hidden" name="id" value="{{ $data->id }}">
 
                                     <div class="row mb-3">
                                         <div class="col-sm-3">
-                                            <h6 class="mb-0">Product Name</h6>
+                                            <h6 class="mb-0">Name</h6>
                                         </div>
                                         <div class="col-sm-9 text-secondary">
                                             <input type="text" name="name"
                                                 class="form-control @error('name') is-invalid @enderror" id=""
-                                                placeholder="Enter Product Name" />
+                                                placeholder="Enter Gold Name" value="{{ $data->name }}" />
 
                                             @error('name')
                                                 <span class="text-danger">{{ $message }}</span>
@@ -47,32 +47,49 @@
                                         </div>
                                     </div>
 
-
                                     <div class="row mb-3">
                                         <div class="col-sm-3">
-                                            <h6 class="mb-0">Product Weight</h6>
+                                            <h6 class="mb-0">Weight</h6>
                                         </div>
                                         <div class="col-sm-9 text-secondary">
-                                            <input type="text" name="weight"
+                                            <input type="number" name="weight"
                                                 class="form-control @error('weight') is-invalid @enderror" id=""
-                                                placeholder="Enter Product Weight" />
+                                                placeholder="Enter Rate Weight" value="{{ $data->weight }}" />
 
-                                            @error('weight')
+                                            @error('rate')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
                                     </div>
 
+
+
                                     <div class="row mb-3">
                                         <div class="col-sm-3">
-                                            <h6 class="mb-0">Product Purity</h6>
+                                            <h6 class="mb-0">Purity</h6>
                                         </div>
                                         <div class="col-sm-9 text-secondary">
-                                            <input type="text" name="purity"
+                                            <input type="number" name="purity"
                                                 class="form-control @error('purity') is-invalid @enderror" id=""
-                                                placeholder="Enter Product Purity" />
+                                                placeholder="Enter Rate purity" value="{{ $data->purity }}" />
 
-                                            @error('purity')
+                                            @error('rate')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row mb-3">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Purity</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            <input type="number" name="purity"
+                                                class="form-control @error('purity') is-invalid @enderror" id=""
+                                                placeholder="Enter Rate purity" value="{{ $data->purity }}" />
+
+                                            @error('rate')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
@@ -84,7 +101,7 @@
                                             <h6 class="mb-0">Product Content</h6>
                                         </div>
                                         <div class="col-sm-9 text-secondary">
-                                            <textarea class="form-control" id="input11" name="content" placeholder="Product Content ..." rows="3"></textarea>
+                                            <textarea class="form-control" id="input11" name="content" placeholder="Product Content ..." rows="3">{{ $data->content }}</textarea>
 
                                             @error('content')
                                                 <span class="text-danger">{{ $message }}</span>
@@ -98,9 +115,12 @@
                                         </div>
                                         <div class="col-sm-9 text-secondary">
                                             <select id="input7" name="category" class="form-select">
-                                                <option selected>Choose Category</option>
-                                                <option value="Gold">Gold</option>
-                                                <option value="Silver">Silver</option>
+                                                <option value="">Choose
+                                                    Category</option>
+                                                <option value="Gold" {{ $data->category === 'Gold' ? 'selected' : '' }}>
+                                                    Gold</option>
+                                                <option value="Silver"
+                                                    {{ $data->category === 'Silver' ? 'selected' : '' }}>Silver</option>
                                             </select>
 
                                             @error('category')
@@ -116,11 +136,13 @@
                                         <div class="col-sm-9 text-secondary">
                                             <select class="form-select mb-3" aria-label="Default select example"
                                                 name="rate_id">
-                                                <option selected="">Choose the Gold Rate</option>
                                                 @foreach ($rates as $item)
-                                                    <option value="{{ $item->id }}">{{ $item->name }} =
-                                                        {{ $item->amount }} Rs.</option>
+                                                    <option value="{{ $item->id }}"
+                                                        {{ $item->id == $data->rate_id ? 'selected' : '' }}>
+                                                        {{ $item->name }} = Rs.
+                                                        {{ $item->amount }} </option>
                                                 @endforeach
+
 
                                             </select>
 
@@ -130,18 +152,18 @@
                                         </div>
                                     </div>
 
-
                                     <div class="row mb-3">
                                         <div class="col-sm-3">
                                             <h6 class="mb-0">Product Image</h6>
                                         </div>
                                         <div class="col-sm-9 text-secondary">
                                             <input type="file" name="image" class="form-control" id="image" />
-
                                             @error('image')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
+
+
                                     </div>
 
                                     <div class="row mb-3">
@@ -149,7 +171,7 @@
                                             <h6 class="mb-0"> </h6>
                                         </div>
                                         <div class="col-sm-9 text-secondary">
-                                            <img id="showImage" src="{{ url('no_image.jpg') }} " alt="Admin"
+                                            <img id="showImage" src="{{ asset($data->image) }}" alt="Admin"
                                                 style="width:100px; height: 100px;">
                                         </div>
                                     </div>
@@ -157,20 +179,15 @@
                                     <div class="row">
                                         <div class="col-sm-3"></div>
                                         <div class="col-sm-9 text-secondary">
-                                            <input type="submit" class="btn btn-primary px-4" value="Add Product" />
+                                            <input type="submit" class="btn btn-primary px-4" value="Update Product" />
                                         </div>
                                     </div>
+
+
+
                             </div>
-
                             </form>
-
-
-
                         </div>
-
-
-
-
                     </div>
                 </div>
             </div>
